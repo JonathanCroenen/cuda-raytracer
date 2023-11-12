@@ -17,8 +17,9 @@ __device__ vec3f trace(const Ray& r, Scene* scene) {
         return vec3f::clamp(vec3f(0.2f) + scene->calc_light(rec), 0.0f, 1.0f);
     }
 
-    float t = 0.5f * (r.direction.y + 1.0f);
-    return (1.0f - t) * vec3f(1.0f, 1.0f, 1.0f) + t * vec3f(0.5f, 0.7f, 1.0f);
+    // float t = 0.5f * (r.direction.y + 1.0f);
+    // return (1.0f - t) * vec3f(1.0f, 1.0f, 1.0f) + t * vec3f(0.5f, 0.7f, 1.0f);
+    return vec3f(0.05, 0.1f, 0.15f);
 }
 
 __global__ void
@@ -71,9 +72,12 @@ int main() {
     dim3 threads(tx, ty);
 
     Scene* scene = new Scene();
-    scene->add(Sphere(vec3f(0.0f, 0.0f, -1.0f), 0.5f, vec3f(1.0f, 0.0f, 0.0f)));
-    scene->add(Sphere(vec3f(0.0f, -100.5f, -1.0f), 100.0f, vec3f(0.0f, 1.0f, 0.0f)));
-    scene->add(Light(vec3f(1.0f, 1.0f, -0.4f), vec3f(1.0f, 1.0f, 1.0f), 5.0f));
+    scene->add(Sphere(vec3f(0.0f, 0.0f, -2.0f), 0.5f, vec3f(1.0f, 0.0f, 0.0f)));
+    scene->add(Sphere(vec3f(1.0f, -0.3f, -1.5f), 0.3f, vec3f(0.0f, 1.0f, 0.0f)));
+    scene->add(Sphere(vec3f(-2.5f, -0.3f, -2.5f), 0.8f, vec3f(0.0f, 0.0f, 1.0f)));
+    scene->add(Sphere(vec3f(2.5f, 1.3f, -2.0f), 0.8f, vec3f(0.0f, 1.0f, 1.0f)));
+    scene->add(Light(vec3f(3.0f, 1.0f, -0.4f), vec3f(1.0f, 0.3f, 0.0f), 3.0f));
+    scene->add(Light(vec3f(-3.0f, -1.0f, -1.0f), vec3f(1.0f, 0.0f, 1.0f), 2.0f));
 
     Camera* camera = new Camera(vec3f(0.0f, 0.0f, 1.0f),
                                 vec3f(0.0f, 0.0f, -1.0f),

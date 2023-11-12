@@ -43,11 +43,11 @@ $(OBJDIR)%.o: $(SRCDIR)%.cpp
 
 
 run: default
-	$(BINDIR)$(TARGET) > $(RESULTSDIR)out.ppm
+	$(BINDIR)$(TARGET) | ppmtojpeg > $(RESULTSDIR)out.jpg
 
 show:
 	make run
-	xdg-open $(RESULTSDIR)out.ppm > /dev/null 2>&1
+	xdg-open $(RESULTSDIR)out.jpg > /dev/null 2>&1
 
 commands:
 	bear -- make

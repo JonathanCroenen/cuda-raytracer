@@ -4,6 +4,7 @@ namespace rtx {
 
 template <typename T = float> struct vec3 {
     __host__ __device__ vec3() : x(0), y(0), z(0) {}
+    __host__ __device__ vec3(T e0) : x(e0), y(e0), z(e0) {}
     __host__ __device__ vec3(T e0, T e1, T e2) : x(e0), y(e1), z(e2) {}
 
     __host__ __device__ inline const vec3<T>& operator+() const { return *this; }
@@ -86,16 +87,12 @@ template <typename T = float> struct vec3 {
     __host__ __device__ inline static vec3<T> normalized(const vec3<T>& v) {
         return v / v.length();
     }
+    __host__ __device__ inline static vec3<T> clamp(const vec3<T>& v, T min, T max) {
+        return vec3<T>(clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max));
+    }
 
     __host__ __device__ inline T length() const { return sqrt(x * x + y * y + z * z); }
     __host__ __device__ inline T squared_length() const { return x * x + y * y + z * z; }
-    __host__ __device__ inline vec3<T>& normalize() {
-        T k = 1.0 / sqrt(x * x + y * y + z * z);
-        x *= k;
-        y *= k;
-        z *= k;
-        return *this;
-    }
 
     union {
         struct {
@@ -105,7 +102,15 @@ template <typename T = float> struct vec3 {
             T r, g, b;
         };
     };
+
+private:
+    __host__ __device__ inline static T clamp(T v, T min, T max) {
+        if (v < min)
+            return min;
+        if (v > max)
+            return max;
+        return v;
+    }
 };
 
 } // namespace rtx
-

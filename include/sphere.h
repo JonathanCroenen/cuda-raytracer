@@ -10,9 +10,11 @@ namespace rtx {
 class Sphere : public GPUAllocated {
 public:
     Sphere() {}
-    Sphere(const vec3<float>& center, float radius) : _center(center), _radius(radius) {}
+    Sphere(const vec3<float>& center, float radius, const vec3<float>& color)
+        : _center(center), _radius(radius), _color(color) {}
 
-    __device__ bool hit(const Ray& ray, float t_min, float t_max, HitRecord& record) const {
+    __device__ bool
+    hit(const Ray& ray, float t_min, float t_max, HitRecord& record) const {
         vec3 oc = ray.origin - _center;
         float a = vec3::dot(ray.direction, ray.direction);
         float b = vec3::dot(oc, ray.direction);
@@ -25,6 +27,7 @@ public:
                 record.t = temp;
                 record.pos = ray.point_at(record.t);
                 record.normal = (record.pos - _center) / _radius;
+                record.color = _color;
                 return true;
             }
 
@@ -33,6 +36,7 @@ public:
                 record.t = temp;
                 record.pos = ray.point_at(record.t);
                 record.normal = (record.pos - _center) / _radius;
+                record.color = _color;
                 return true;
             }
         }
@@ -49,5 +53,3 @@ private:
 };
 
 } // namespace rtx
-
-

@@ -12,7 +12,8 @@ using vec3f = rtx::vec3<float>;
 __device__ vec3f trace(const Ray& r, Scene* scene) {
     HitRecord rec;
     if (scene->hit(r, 0.0f, 1000.0f, rec)) {
-        return 0.5f * (rec.normal + vec3f(1.0f, 1.0f, 1.0f));
+        // return 0.5f * (rec.normal + vec3f(1.0f, 1.0f, 1.0f));
+        return rec.color;
     }
 
     float t = 0.5f * (r.direction.y + 1.0f);
@@ -69,8 +70,8 @@ int main() {
     dim3 threads(tx, ty);
 
     Scene* scene = new Scene();
-    scene->add(Sphere(vec3f(0.0f, 0.0f, -1.0f), 0.5f));
-    scene->add(Sphere(vec3f(0.0f, -100.5f, -1.0f), 100.0f));
+    scene->add(Sphere(vec3f(0.0f, 0.0f, -1.0f), 0.5f, vec3f(1.0f, 0.0f, 0.0f)));
+    scene->add(Sphere(vec3f(0.0f, -100.5f, -1.0f), 100.0f, vec3f(0.0f, 1.0f, 0.0f)));
 
     Camera* camera = new Camera(vec3f(0.0f, 0.0f, 1.0f),
                                 vec3f(0.0f, 0.0f, -1.0f),

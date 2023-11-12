@@ -11,6 +11,7 @@ TARGET = target
 SRCDIR = ./src/
 OBJDIR = ./obj/
 BINDIR = ./bin/
+RESULTSDIR = ./results/
 
 INC = -I./include/
 
@@ -42,11 +43,11 @@ $(OBJDIR)%.o: $(SRCDIR)%.cpp
 
 
 run: default
-	$(BINDIR)$(TARGET) > out.ppm
+	$(BINDIR)$(TARGET) > $(RESULTSDIR)out.ppm
 
 show:
 	make run
-	xdg-open out.ppm > /dev/null 2>&1
+	xdg-open $(RESULTSDIR)out.ppm > /dev/null 2>&1
 
 commands:
 	bear -- make

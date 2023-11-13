@@ -11,10 +11,10 @@
 using namespace rtx;
 using vec3f = rtx::vec3<float>;
 
-__device__ vec3f trace(const Ray& r, Scene* scene) {
+__device__ vec3f trace(const Ray& r, Camera* camera, Scene* scene) {
     HitRecord rec;
     if (scene->hit(r, 0.0f, 1000.0f, rec)) {
-        return vec3f::clamp(vec3f(0.2f) + scene->calc_light(rec), 0.0f, 1.0f);
+        return vec3f::clamp(vec3f(0.2f) + scene->calc_light(rec, *camera), 0.0f, 1.0f);
     }
 
     // float t = 0.5f * (r.direction.y + 1.0f);
@@ -36,7 +36,7 @@ render(vec3f* framebuffer, int width, int height, Camera* camera, Scene* scene) 
     float v = float(j) / float(height);
 
     Ray ray = camera->generate_ray(u, v);
-    framebuffer[pixel_index] = trace(ray, scene);
+    framebuffer[pixel_index] = trace(ray, camera, scene);
 }
 
 void print_ppm(vec3f* framebuffer, int width, int height) {

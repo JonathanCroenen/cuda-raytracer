@@ -3,6 +3,7 @@
 #include "vec3.h"
 #include "sphere.h"
 #include "light.h"
+#include "camera.h"
 
 #include <thrust/device_vector.h>
 
@@ -32,14 +33,21 @@ public:
         return hit_anything;
     }
 
-    __device__ vec3 calc_light(const HitRecord& rec) const {
+    __device__ vec3 calc_light(const HitRecord& rec, const Camera& camera) const {
         vec3 color(0.0f);
 
         for (const Light& light : _lights) {
             vec3 light_direction = vec3::normalized(light.position - rec.pos);
+            Ray shadow_ray(rec.pos, light_direction);
+
             vec3 intensity = max(0.0f, vec3::dot(rec.normal, light_direction));
             intensity *= 0.9f / 3.141592f * light.intensity;
             intensity *= rec.color * light.color;
+
+            vec3 reflected = vec3::reflect(-light_direction, rec.normal);
+            vec3 cam_direction = vec3::normalized(camera.origin() - rec.pos);
+            float c = max(0.0f, vec3::dot(reflected, cam_direction));
+            intensity += 0.2f * pow(c, 20.0f) * light.intensity * light.color;
             color += intensity;
         }
 

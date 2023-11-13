@@ -34,6 +34,8 @@ public:
         return Ray(_origin, _forward + u * _right + v * _up);
     }
 
+    __host__ __device__ vec3 origin() const { return _origin; }
+
 private:
     vec3 _origin;
     vec3 _forward;

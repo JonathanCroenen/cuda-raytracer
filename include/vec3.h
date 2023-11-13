@@ -90,6 +90,14 @@ template <typename T = float> struct vec3 {
     __host__ __device__ inline static vec3<T> clamp(const vec3<T>& v, T min, T max) {
         return vec3<T>(clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max));
     }
+    __host__ __device__ inline static vec3<T> reflect(const vec3<T>& v,
+                                                      const vec3<T>& n) {
+        vec3 normal = normalized(n);
+        return v - 2 * dot(v, normal) * normal;
+    }
+    __host__ __device__ inline static T angle(const vec3<T>& v1, const vec3<T>& v2) {
+        return acos(dot(v1, v2) / (v1.length() * v2.length()));
+    }
 
     __host__ __device__ inline T length() const { return sqrt(x * x + y * y + z * z); }
     __host__ __device__ inline T squared_length() const { return x * x + y * y + z * z; }

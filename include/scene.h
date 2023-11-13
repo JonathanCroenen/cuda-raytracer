@@ -39,6 +39,10 @@ public:
         for (const Light& light : _lights) {
             vec3 light_direction = vec3::normalized(light.position - rec.pos);
             Ray shadow_ray(rec.pos, light_direction);
+            HitRecord shadow_rec;
+            if (hit(shadow_ray, 0.001f, 1000.0f, shadow_rec)) {
+                continue;
+            }
 
             vec3 intensity = max(0.0f, vec3::dot(rec.normal, light_direction));
             intensity *= 0.9f / 3.141592f * light.intensity;
@@ -47,7 +51,7 @@ public:
             vec3 reflected = vec3::reflect(-light_direction, rec.normal);
             vec3 cam_direction = vec3::normalized(camera.origin() - rec.pos);
             float c = max(0.0f, vec3::dot(reflected, cam_direction));
-            intensity += 0.2f * pow(c, 20.0f) * light.intensity * light.color;
+            intensity += 0.5f * pow(c, 20.0f) * light.intensity * light.color;
             color += intensity;
         }
 

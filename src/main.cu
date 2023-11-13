@@ -74,10 +74,10 @@ int main() {
     Scene* scene = new Scene();
     scene->add(Sphere(vec3f(0.0f, 0.0f, -2.0f), 0.5f, vec3f(1.0f, 0.0f, 0.0f)));
     scene->add(Sphere(vec3f(1.0f, -0.3f, -1.5f), 0.3f, vec3f(0.0f, 1.0f, 0.0f)));
-    scene->add(Sphere(vec3f(-2.5f, -0.3f, -2.5f), 0.8f, vec3f(0.0f, 0.0f, 1.0f)));
+    scene->add(Sphere(vec3f(-2.5f, -0.3f, -2.0f), 0.8f, vec3f(0.0f, 0.0f, 1.0f)));
     scene->add(Sphere(vec3f(2.5f, 1.3f, -2.0f), 0.8f, vec3f(0.0f, 1.0f, 1.0f)));
     scene->add(Light(vec3f(3.0f, 1.0f, -0.4f), vec3f(1.0f, 0.3f, 0.0f), 3.0f));
-    scene->add(Light(vec3f(-3.0f, -1.0f, -1.0f), vec3f(1.0f, 0.0f, 1.0f), 2.0f));
+    scene->add(Light(vec3f(-3.25f, -0.4f, -1.1f), vec3f(1.0f, 0.0f, 1.0f), 2.0f));
 
     Camera* camera = new Camera(vec3f(0.0f, 0.0f, 1.0f),
                                 vec3f(0.0f, 0.0f, -1.0f),

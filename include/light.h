@@ -1,12 +1,12 @@
 #pragma once
 
-#include "vec3.h"
+#include "math/vec3.h"
 #include "ray.h"
-#include "utils.h"
+// #include "utils.h"
 
 namespace rtx {
 
-struct Light : public GPUAllocated {
+struct Light {
     using vec3 = vec3<float>;
 
     Light() {}

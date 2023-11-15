@@ -1,29 +1,29 @@
-#include <iostream>
-
 #include "camera.h"
-#include "utils.h"
-#include "vec3.h"
+#include "utils/cuda.h"
+#include "math/vec3.h"
 #include "ray.h"
-#include "sphere.h"
+#include "primitives/sphere.h"
+#include "primitives/volume.h"
 #include "light.h"
 #include "scene.h"
+
+#include <iostream>
 
 using namespace rtx;
 using vec3f = rtx::vec3<float>;
 
-__device__ vec3f trace(const Ray& r, Camera* camera, Scene* scene) {
+GPU_FUNC vec3f trace(const Ray& r, Camera* camera, Scene* scene) {
     HitRecord rec;
-    if (scene->hit(r, 0.0f, 1000.0f, rec)) {
-        return vec3f::clamp(vec3f(0.2f) + scene->calc_light(rec, *camera), 0.0f, 1.0f);
+    if (scene->intersect(r, 0.0f, 1000.0f, rec)) {
+        return rec.color;
     }
 
-    // float t = 0.5f * (r.direction.y + 1.0f);
-    // return (1.0f - t) * vec3f(1.0f, 1.0f, 1.0f) + t * vec3f(0.5f, 0.7f, 1.0f);
-    return vec3f(0.05, 0.1f, 0.15f);
+    float t = 0.5f * (r.direction.y + 1.0f);
+    return (1.0f - t) * vec3f(1.0f, 1.0f, 1.0f) + t * vec3f(0.5f, 0.7f, 1.0f);
 }
 
-__global__ void
-render(vec3f* framebuffer, int width, int height, Camera* camera, Scene* scene) {
+KERNEL_FUNC void render(vec3f* framebuffer, int width, int height, Camera* camera,
+                        Scene* scene) {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     int j = threadIdx.y + blockIdx.y * blockDim.y;
 
@@ -71,19 +71,17 @@ int main() {
     dim3 blocks(width / tx + 1, height / ty + 1);
     dim3 threads(tx, ty);
 
-    Scene* scene = new Scene();
-    scene->add(Sphere(vec3f(0.0f, 0.0f, -2.0f), 0.5f, vec3f(1.0f, 0.0f, 0.0f)));
-    scene->add(Sphere(vec3f(1.0f, -0.3f, -1.5f), 0.3f, vec3f(0.0f, 1.0f, 0.0f)));
-    scene->add(Sphere(vec3f(-2.5f, -0.3f, -2.0f), 0.8f, vec3f(0.0f, 0.0f, 1.0f)));
-    scene->add(Sphere(vec3f(2.5f, 1.3f, -2.0f), 0.8f, vec3f(0.0f, 1.0f, 1.0f)));
-    scene->add(Light(vec3f(3.0f, 1.0f, -0.4f), vec3f(1.0f, 0.3f, 0.0f), 3.0f));
-    scene->add(Light(vec3f(-3.25f, -0.4f, -1.1f), vec3f(1.0f, 0.0f, 1.0f), 2.0f));
+    Scene* scene = new Scene{
+        make_volume<Sphere>(vec3f(1.0f, -0.3f, -1.5f), 0.3f, vec3f(0.0f, 1.0f, 0.0f)),
+        make_volume<Sphere>(vec3f(-2.5f, -0.3f, -2.0f), 0.8f, vec3f(0.0f, 0.0f, 1.0f)),
+        make_volume<Sphere>(vec3f(2.5f, 1.3f, -2.0f), 0.8f, vec3f(0.0f, 1.0f, 1.0f)),
+        make_volume<Plane>(vec3f(0.0f, -10.0f, 0.0f), vec3f(0.0f, 1.0f, 0.0f),
+                           vec3f(0.5f, 0.5f, 0.5f)),
+    };
 
-    Camera* camera = new Camera(vec3f(0.0f, 0.0f, 1.0f),
-                                vec3f(0.0f, 0.0f, -1.0f),
-                                vec3f(0.0f, 1.0f, 0.0f),
-                                90.0f,
-                                float(width) / float(height));
+    Camera* camera =
+        new Camera(vec3f(0.0f, 0.0f, 1.0f), vec3f(0.0f, 0.0f, -1.0f),
+                   vec3f(0.0f, 1.0f, 0.0f), 90.0f, float(width) / float(height));
 
     render<<<blocks, threads>>>(framebuffer, width, height, camera, scene);
     CHECK_CUDA_ERRORS(cudaGetLastError());

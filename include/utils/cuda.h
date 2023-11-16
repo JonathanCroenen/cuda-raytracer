@@ -8,8 +8,9 @@
 #define CPU_GPU_FUNC __device__ __host__
 #define KERNEL_FUNC __global__
 
+#define CHECK_CUDA_ERRORS(val) rtx::utils::CheckCudaErrors((val), #val, __FILE__, __LINE__)
 
-#define CHECK_CUDA_ERRORS(val) CheckCudaErrors((val), #val, __FILE__, __LINE__)
+namespace rtx::utils {
 
 inline void CheckCudaErrors(cudaError_t result,
                      const char* const func,
@@ -24,3 +25,4 @@ inline void CheckCudaErrors(cudaError_t result,
     }
 }
 
+} // namespace rtx::utils

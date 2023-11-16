@@ -5,12 +5,12 @@
 #include "light.h"
 #include "camera.h"
 #include "utils/cuda.h"
-#include "utils/gpu_allocated.h"
+#include "utils/gpu_managed.h"
 #include <initializer_list>
 
 namespace rtx {
 
-class Scene : public GPUAllocated {
+class Scene : public utils::GPUManaged {
 public:
     Scene(std::initializer_list<Volume> volumes);
     ~Scene();

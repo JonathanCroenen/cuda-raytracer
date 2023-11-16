@@ -1,18 +1,17 @@
 #pragma once
 
-#include "math/vec3.h"
-#include "primitives/sphere.h"
 #include "primitives/plane.h"
+#include "primitives/sphere.h"
 #include "ray.h"
 #include "utils/cuda.h"
-#include "utils/gpu_allocated.h"
+#include "utils/gpu_managed.h"
 
 namespace rtx {
 
-class Volume : public GPUAllocated {
+class Volume : public utils::GPUManaged {
 public:
-    Volume(const Sphere& sphere) : type(Type::SPHERE) { _data.sphere = sphere; }
-    Volume(const Plane& plane) : type(Type::PLANE) { _data.plane = plane; }
+    Volume(const Sphere& sphere) : _type(Type::SPHERE) { _data.sphere = sphere; }
+    Volume(const Plane& plane) : _type(Type::PLANE) { _data.plane = plane; }
 
     ~Volume();
 
@@ -20,10 +19,11 @@ public:
                             HitRecord& record) const;
 
 private:
-    enum class Type { SPHERE, PLANE } type;
+    enum class Type { SPHERE, PLANE } _type;
 
     union Data {
         Data() {}
+
         ~Data() {}
 
         Sphere sphere;
@@ -31,7 +31,8 @@ private:
     } _data;
 };
 
-template <typename T, typename... Args> Volume make_volume(Args... args) {
+template <typename T, typename... Args>
+Volume make_volume(Args... args) {
     return Volume(T(args...));
 }
 

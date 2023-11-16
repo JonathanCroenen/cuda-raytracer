@@ -4,11 +4,17 @@
 
 namespace rtx {
 
+class Material;
+
 struct HitRecord {
+private:
+    using vec3 = math::vec3<float>;
+
+public:
     float t;
-    vec3<float> pos;
-    vec3<float> normal;
-    vec3<float> color;
+    vec3 pos;
+    vec3 normal;
+    const Material* material;
 };
 
 } // namespace rtx

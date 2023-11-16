@@ -3,7 +3,7 @@
 namespace rtx {
 
 Volume::~Volume() {
-    switch (type) {
+    switch (_type) {
     case Type::SPHERE:
         _data.sphere.~Sphere();
         break;
@@ -16,7 +16,7 @@ Volume::~Volume() {
 
 GPU_FUNC bool Volume::intersect(const Ray& ray, float t_min, float t_max,
                                 HitRecord& record) const {
-    switch (type) {
+    switch (_type) {
     case Type::SPHERE:
         return _data.sphere.intersect(ray, t_min, t_max, record);
     case Type::PLANE:

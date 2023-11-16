@@ -2,12 +2,12 @@
 
 #include "math/vec3.h"
 #include "ray.h"
-// #include "utils.h"
+#include "utils/gpu_managed.h"
 
 namespace rtx {
 
-struct Light {
-    using vec3 = vec3<float>;
+struct Light : utils::GPUManaged {
+    using vec3 = math::vec3<float>;
 
     Light() {}
     Light(const vec3& position, const vec3& color, float intensity)

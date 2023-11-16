@@ -16,7 +16,7 @@ GPU_FUNC bool Sphere::intersect(const Ray& ray, float t_min, float t_max,
             record.t = dist;
             record.pos = ray.point_at(dist);
             record.normal = (record.pos - _center) / _radius;
-            record.color = _color;
+            record.material = &_material;
 
             return true;
         }
@@ -26,7 +26,7 @@ GPU_FUNC bool Sphere::intersect(const Ray& ray, float t_min, float t_max,
             record.t = dist;
             record.pos = ray.point_at(dist);
             record.normal = (record.pos - _center) / _radius;
-            record.color = _color;
+            record.material = &_material;
 
             return true;
         }

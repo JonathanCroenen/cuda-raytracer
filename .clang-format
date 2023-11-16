@@ -7,10 +7,25 @@ AllowShortBlocksOnASingleLine: Always
 AllowShortFunctionsOnASingleLine: All
 AccessModifierOffset: -4
 LambdaBodyIndentation: OuterScope
-SortIncludes: false
+SortIncludes: CaseSensitive
+IncludeBlocks: Merge
 BinPackParameters: true
 BinPackArguments: true
+PackConstructorInitializers: NextLine
+BreakConstructorInitializers: BeforeColon
 AlwaysBreakAfterReturnType: None
-AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: false
 AlignTrailingComments: Always
+AlwaysBreakTemplateDeclarations: Yes
+SeparateDefinitionBlocks: Leave
+
+PenaltyBreakAssignment: 100
+PenaltyBreakBeforeFirstCallParameter: 0
+PenaltyBreakComment: 0
+PenaltyBreakFirstLessLess: 100
+PenaltyBreakOpenParenthesis: 10
+PenaltyBreakString: 30
+PenaltyExcessCharacter: 10
+PenaltyIndentedWhitespace: 0
+PenaltyReturnTypeOnItsOwnLine: 100
 ---

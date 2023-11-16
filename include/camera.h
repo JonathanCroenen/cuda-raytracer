@@ -2,21 +2,22 @@
 
 #include "ray.h"
 #include "math/vec3.h"
-#include "utils/gpu_allocated.h"
+#include "utils/cuda.h"
+#include "utils/gpu_managed.h"
 
 namespace rtx {
 
-class Camera : public GPUAllocated {
+class Camera : public utils::GPUManaged {
 public:
-    using vec3 = vec3<float>;
+    using vec3 = math::vec3<float>;
 
     Camera() {}
     Camera(const vec3& origin, const vec3& look_at, const vec3& up, float fov,
            float aspect);
 
-    __device__ Ray generate_ray(float u, float v) const;
+    GPU_FUNC Ray generate_ray(float u, float v) const;
 
-    __host__ __device__ vec3 origin() const { return _origin; }
+    CPU_GPU_FUNC vec3 origin() const { return _origin; }
 
 private:
     vec3 _origin;

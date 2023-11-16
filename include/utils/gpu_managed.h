@@ -2,9 +2,11 @@
 
 #include "utils/cuda.h"
 
-class GPUAllocated {
+namespace rtx::utils {
+
+class GPUManaged {
 public:
-    GPUAllocated(const GPUAllocated&) = delete;
+    GPUManaged(const GPUManaged&) = delete;
 
     void* operator new(size_t size) {
         void* ptr;
@@ -27,5 +29,7 @@ public:
     }
 
 protected:
-    GPUAllocated() = default;
+    GPUManaged() = default;
 };
+
+} // namespace rtx::utils

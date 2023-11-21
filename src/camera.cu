@@ -19,7 +19,7 @@ Camera::Camera(const vec3& origin, const vec3& look_at, const vec3& up, float fo
     _up = half_height * vec3::normalized(vec3::cross(_right, _forward));
 }
 
-__device__ Ray Camera::generate_ray(float u, float v) const {
+GPU_FUNC Ray Camera::generate_ray(float u, float v) const {
     u = -1.0f + 2.0f * u;
     v = -1.0f + 2.0f * v;
 

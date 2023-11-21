@@ -1,88 +1,53 @@
 #pragma once
 
+#include "camera.h"
 #include "math/vec3.h"
 #include "scene.h"
 #include "utils/cuda.h"
+#include "utils/gpu_managed.h"
 #include <curand_kernel.h>
+#include <memory>
 
 namespace rtx {
 
-class Renderer {
+class Renderer : public utils::GPUManaged {
 private:
     using vec3 = math::vec3<float>;
 
 public:
+    ~Renderer();
+
+    struct Parameters {
+        uint width;
+        uint height;
+        uint rays_per_pixel;
+        uint max_depth;
+        dim3 num_threads;
+    };
+
+    static std::unique_ptr<Renderer> create(const Parameters& params);
+
+    vec3* render(Camera* camera, Scene* scene);
+
 private:
-    KERNEL_FUNC static void init_random_state(int width, int height,
-                                              curandState* random_state) {
-        int x = blockIdx.x * blockDim.x + threadIdx.x;
-        int y = blockIdx.y * blockDim.y + threadIdx.y;
-        if (x >= width || y >= height) {
-            return;
-        }
+    Renderer(Parameters params);
 
-        int pixel_index = y * width + x;
-        curand_init(1984 + pixel_index, 0, 0, &random_state[pixel_index]);
-    }
+    friend KERNEL_FUNC void init_random_state_kernel(Renderer* renderer);
+    friend KERNEL_FUNC void render_kernel(Renderer* renderer, Camera* camera, Scene* scene);
 
-    KERNEL_FUNC static void render(vec3* framebuffer, int width, int height,
-                                   Camera* camera, Scene* scene, curandState* rand_state) {
-        int i = threadIdx.x + blockIdx.x * blockDim.x;
-        int j = threadIdx.y + blockIdx.y * blockDim.y;
+    GPU_FUNC void render(Camera* camera, Scene* scene, uint i, uint j);
+    GPU_FUNC vec3 trace(const Ray& ray, Camera* camera, Scene* scene, curandState* rand_state);
 
-        if (i >= width || j >= height) {
-            return;
-        }
+private:
+    uint _width;
+    uint _height;
+    uint _rays_per_pixel;
+    uint _max_depth;
+    dim3 _num_threads;
+    dim3 _num_blocks;
 
-        int pixel_index = j * width + i;
-        curandState local_rand_state = rand_state[pixel_index];
-
-        vec3 color = vec3(0.0f);
-        for (int s = 0; s < 2000; s++) {
-            float du = curand_uniform(&local_rand_state);
-            float dv = curand_uniform(&local_rand_state);
-
-            float u = float(i + du) / float(width);
-            float v = float(j + dv) / float(height);
-
-            Ray ray = camera->generate_ray(u, v);
-            color += trace(ray, camera, scene, &local_rand_state);
-        }
-
-        color /= 2000.0f;
-        color = vec3::clamp(color, 0.0f, 1.0f);
-        color = vec3(sqrt(color.r), sqrt(color.g), sqrt(color.b));
-        framebuffer[pixel_index] = color;
-    }
-
-    GPU_FUNC vec3 trace(const Ray& ray, Camera* camera, Scene* scene,
-                        curandState* rand_state) {
-        Ray current_ray = ray;
-        vec3 current_attenuation = vec3(1.0f);
-
-        for (int i = 0; i < 10; i++) {
-            HitRecord record;
-            if (scene->intersect(current_ray, 0.001f, 10000.0f, record)) {
-                Ray scattered;
-                vec3 attenuation;
-                if (record.material->scatter(current_ray, record, attenuation, scattered,
-                                             rand_state)) {
-                    current_ray = scattered;
-                    current_attenuation *= attenuation;
-                } else {
-                    return current_attenuation * attenuation;
-                }
-            } else {
-                vec3 unit_direction = vec3::normalized(current_ray.direction);
-                float t = 0.5f * (unit_direction.y + 1.0f);
-                vec3 background_color = (1.0f - t) * vec3(1.0f, 1.0f, 1.0f) +
-                                        t * vec3(0.5f, 0.7f, 1.0f);
-                return current_attenuation * background_color;
-            }
-        }
-
-        return current_attenuation;
-    }
+    curandState* _random_state;
+    vec3* _framebuffer;
 };
 
 } // namespace rtx

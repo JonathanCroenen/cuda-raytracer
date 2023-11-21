@@ -2,6 +2,11 @@
 
 namespace rtx {
 
+std::unique_ptr<Camera> Camera::create(const vec3& origin, const vec3& look_at,
+                                       const vec3& up, float fov, float aspect) {
+    return std::unique_ptr<Camera>(new Camera(origin, look_at, up, fov, aspect));
+}
+
 Camera::Camera(const vec3& origin, const vec3& look_at, const vec3& up, float fov,
                float aspect) {
     float theta = fov * 3.141592f / 180.0f;

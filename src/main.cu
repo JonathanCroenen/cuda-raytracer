@@ -105,9 +105,9 @@ int main() {
 
     auto scene = scene::create_cornell_quads();
 
-    auto camera = std::make_unique<Camera>(vec3(0.0f, 0.0f, 3.0f), vec3(0.0f, 0.0f, -1.0f),
-                                           vec3(0.0f, 1.0f, 0.0f), 90.0f,
-                                           float(width) / float(height));
+    auto camera = Camera::create(vec3(0.0f, 0.0f, 3.0f), vec3(0.0f, 0.0f, -1.0f),
+                                 vec3(0.0f, 1.0f, 0.0f), 90.0f,
+                                 float(width) / float(height));
 
     render<<<blocks, threads>>>(framebuffer, width, height, camera.get(), scene.get(),
                                 rand_state);

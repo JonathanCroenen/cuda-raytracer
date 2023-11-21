@@ -12,7 +12,7 @@ namespace rtx::scene {
 std::unique_ptr<Scene> create_cornell_quads() {
     using vec3 = math::vec3<float>;
 
-    auto scene = std::make_unique<Scene>();
+    auto scene = Scene::create();
     MaterialId white = scene->register_material(Lambertian(vec3(0.73f, 0.73f, 0.73f)));
     MaterialId green = scene->register_material(Lambertian(vec3(0.12f, 0.45f, 0.15f)));
     MaterialId blue = scene->register_material(Lambertian(vec3(0.12f, 0.15f, 0.45f)));

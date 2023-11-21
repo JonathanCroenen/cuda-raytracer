@@ -3,6 +3,10 @@
 
 namespace rtx {
 
+std::unique_ptr<Scene> Scene::create() {
+    return std::unique_ptr<Scene>(new Scene());
+}
+
 Scene& Scene::add_volume(const Volume& volume, MaterialId material) {
     _objects.emplace_back(volume, material);
     return *this;

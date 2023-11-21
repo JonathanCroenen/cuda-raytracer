@@ -1,9 +1,9 @@
-CXX = g++
+CXX = g++-12
 NVCC = nvcc -ccbin $(CXX)
 
 GENCODE_FLAGS = -gencode arch=compute_75,code=sm_75
 DEBUG_FLAGS = -g -G
-NVCC_FLAGS = -std=c++17 -O2 -MMD -MP -m64 -g $(GENCODE_FLAGS) -allow-unsupported-compiler -Xcompiler -Wall,-Wextra
+NVCC_FLAGS = -std=c++17 -O2 -MMD -MP -m64 -g $(GENCODE_FLAGS) -Xcompiler -Wall,-Wextra
 TARGET = target
 
 SRCDIR = ./src/

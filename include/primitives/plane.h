@@ -1,7 +1,6 @@
 #pragma once
 
 #include "hit_record.h"
-#include "materials/material.h"
 #include "math/vec3.h"
 #include "ray.h"
 #include "utils/cuda.h"
@@ -9,14 +8,16 @@
 
 namespace rtx {
 
-class Plane : public utils::GPUManaged {
+class Plane {
 private:
     using vec3 = math::vec3<float>;
 
 public:
-    Plane() {}
-    Plane(const vec3& position, const vec3& normal, const Material& material)
-        : _position(position), _normal(normal), _material(material) {}
+    Plane() = default;
+    Plane(const Plane&) = default;
+
+    Plane(const vec3& position, const vec3& normal)
+        : _position(position), _normal(normal) {}
 
     GPU_FUNC bool intersect(const Ray& ray, float t_min, float t_max,
                             HitRecord& record) const;
@@ -24,7 +25,6 @@ public:
 private:
     vec3 _position;
     vec3 _normal;
-    Material _material;
 };
 
 } // namespace rtx

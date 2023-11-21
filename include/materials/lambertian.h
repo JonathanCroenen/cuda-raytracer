@@ -10,13 +10,14 @@ namespace rtx {
 
 struct HitRecord;
 
-class Lambertian : public utils::GPUManaged {
+class Lambertian {
 private:
     using vec3 = math::vec3<float>;
 
 public:
     Lambertian(const vec3& albedo) : _albedo(albedo) {}
     Lambertian(const Lambertian& other) : _albedo(other._albedo) {}
+    Lambertian(Lambertian&& other) : _albedo(other._albedo) {}
 
     GPU_FUNC bool scatter(const Ray& ray, const HitRecord& record, vec3& attenuation,
                           Ray& scattered, curandState* rand_state) const;

@@ -14,7 +14,6 @@ GPU_FUNC bool Plane::intersect(const Ray& ray, float t_min, float t_max,
         record.t = dist;
         record.pos = ray.point_at(dist);
         record.normal = _normal;
-        record.material = &_material;
 
         return true;
     }

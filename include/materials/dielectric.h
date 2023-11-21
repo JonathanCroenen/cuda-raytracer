@@ -10,13 +10,14 @@ namespace rtx {
 
 struct HitRecord;
 
-class Dielectric : public utils::GPUManaged {
+class Dielectric {
 private:
     using vec3 = math::vec3<float>;
 
 public:
     Dielectric(float refraction_index) : _refraction_index(refraction_index) {}
     Dielectric(const Dielectric& other) : _refraction_index(other._refraction_index) {}
+    Dielectric(Dielectric&& other) : _refraction_index(other._refraction_index) {}
 
     GPU_FUNC bool scatter(const Ray& ray, const HitRecord& record, vec3& attenuation,
                           Ray& scattered, curandState* rand_state) const;

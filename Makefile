@@ -13,7 +13,7 @@ RESULTSDIR = ./results/
 
 INC = -I./include/
 
-SRC := $(shell find $(SRCDIR) -maxdepth 2 -type f -name "*.cu")
+SRC := $(shell find $(SRCDIR) -maxdepth 3 -type f -name "*.cu")
 OBJ := $(patsubst $(SRCDIR)%, $(OBJDIR)%, $(SRC:.cu=.o))
 
 
@@ -35,11 +35,11 @@ $(OBJDIR)%.o: $(SRCDIR)%.cu
 
 
 run: default
-	$(BINDIR)$(TARGET) | ppmtojpeg > $(RESULTSDIR)out.jpg
+	$(BINDIR)$(TARGET) | pnmtopng > $(RESULTSDIR)out.png
 
 show:
 	make run
-	xdg-open $(RESULTSDIR)out.jpg > /dev/null 2>&1
+	xdg-open $(RESULTSDIR)out.png > /dev/null 2>&1
 
 commands:
 	bear -- make

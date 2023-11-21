@@ -1,16 +1,17 @@
 #pragma once
 
+#include "primitives/disk.h"
 #include "primitives/plane.h"
 #include "primitives/sphere.h"
-#include "materials/material.h"
+#include "primitives/triangle.h"
+#include "primitives/quad.h"
 #include "ray.h"
 #include "utils/cuda.h"
 #include "utils/variant.h"
-#include "utils/gpu_managed.h"
 
 namespace rtx {
 
-class Volume : utils::Variant<Sphere, Plane> {
+class Volume : utils::Variant<Sphere, Plane, Triangle, Disk, Quad> {
 public:
     using Variant::Variant;
 

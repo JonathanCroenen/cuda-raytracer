@@ -1,5 +1,4 @@
 #include "camera.h"
-#include "scene.h"
 #include "renderer.h"
 #include "scenes/cornell_quads.h"
 #include "utils/ppm.h"
@@ -20,9 +19,13 @@ int main() {
     auto renderer = Renderer::create(params);
     auto scene = scene::create_cornell_quads();
 
-    auto camera = Camera::create(vec3(0.0f, 0.0f, 3.0f), vec3(0.0f, 0.0f, -1.0f),
-                                 vec3(0.0f, 1.0f, 0.0f), 90.0f,
-                                 float(params.width) / float(params.height));
+    auto camera = Camera::create(
+        vec3(0.0f, 0.0f, 3.0f),
+        vec3(0.0f, 0.0f, -1.0f),
+        vec3(0.0f, 1.0f, 0.0f),
+        90.0f,
+        float(params.width) / float(params.height)
+    );
 
     vec3* framebuffer = renderer->render(camera.get(), scene.get());
 

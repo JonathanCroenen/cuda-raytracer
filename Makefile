@@ -20,14 +20,11 @@ OBJ := $(patsubst $(SRCDIR)%, $(OBJDIR)%, $(SRC:.cu=.o))
 .PHONY: clean run commands
 all: default
 
-echo:
-	@echo $(SRC)
-	@echo $(OBJ)
-
 default: $(OBJ)
 	$(NVCC) $(NVCC_FLAGS) $(OBJ) -o $(BINDIR)$(TARGET) $(LIB)
 
 $(OBJDIR)%.o: $(SRCDIR)%.cu
+	@mkdir -p $(dir $@)
 	$(NVCC) -c -dc $(NVCC_FLAGS) $(INC) $< -o $@
 
 

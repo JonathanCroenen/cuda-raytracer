@@ -18,6 +18,10 @@ AllowAllParametersOfDeclarationOnNextLine: false
 AlignTrailingComments: Always
 AlwaysBreakTemplateDeclarations: Yes
 SeparateDefinitionBlocks: Leave
+IndentCaseLabels: false
+IndentCaseBlocks: false
+IndentPPDirectives: AfterHash
+PPIndentWidth: 2
 
 PenaltyBreakAssignment: 100
 PenaltyBreakBeforeFirstCallParameter: 0

@@ -31,6 +31,7 @@ KERNEL_FUNC void render_kernel(Renderer* renderer, Camera* camera, Scene* scene)
 // RENDERER IMPLEMENTATION
 
 std::unique_ptr<Renderer> Renderer::create(const Parameters& params) {
+    // std::make_unique doesn't work here because we use a private constructor
     return std::unique_ptr<Renderer>(new Renderer(params));
 }
 

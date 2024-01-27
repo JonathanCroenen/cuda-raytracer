@@ -1,45 +1,37 @@
 CXX = g++-12
 NVCC = nvcc -ccbin $(CXX)
 
-GENCODE_FLAGS = -gencode arch=compute_75,code=sm_75
-DEBUG_FLAGS = -g -G
-NVCC_FLAGS = -std=c++17 -O2 -MMD -MP -m64 -g $(GENCODE_FLAGS) -Xcompiler -Wall,-Wextra
-TARGET = target
+NVCC_FLAGS = -std=c++17 -O2 -MMD -MP -m64 -g -gencode arch=compute_75,code=sm_75 -Xcompiler -Wall,-Wextra 
 
-SRCDIR = ./src/
-OBJDIR = ./obj/
-BINDIR = ./bin/
-RESULTSDIR = ./results/
+LIB_DIR = lib
+EXE_DIR = exe
+BUILD_DIR = build
 
-INC = -I./include/
+SRCS := $(shell find $(LIB_DIR) -maxdepth 3 -type f -name "*.cu")
+OBJS := $(patsubst $(LIB_DIR)/%.cu, $(BUILD_DIR)/%.o, $(SRCS))
 
-SRC := $(shell find $(SRCDIR) -maxdepth 3 -type f -name "*.cu")
-OBJ := $(patsubst $(SRCDIR)%, $(OBJDIR)%, $(SRC:.cu=.o))
+EXE_SRCS := $(shell find $(EXE_DIR) -maxdepth 3 -type f -name "*.cu")
+EXES := $(patsubst $(EXE_DIR)/%.cu, $(BUILD_DIR)/$(EXE_DIR)/%, $(EXE_SRCS))
 
+.PHONY: default executables clean
 
-.PHONY: clean run commands
-all: default
+default:
+	$(MAKE) -j8 executables
 
-default: $(OBJ)
-	$(NVCC) $(NVCC_FLAGS) $(OBJ) -o $(BINDIR)$(TARGET) $(LIB)
+executables: $(OBJS) $(EXES)
 
-$(OBJDIR)%.o: $(SRCDIR)%.cu
+$(BUILD_DIR)/$(EXE_DIR)/%: $(EXE_DIR)/%.cu
 	@mkdir -p $(dir $@)
-	$(NVCC) -c -dc $(NVCC_FLAGS) $(INC) $< -o $@
+	$(NVCC) $(NVCC_FLAGS) -I$(LIB_DIR) $< $(OBJS) -o $@
 
+$(BUILD_DIR)/%.o: $(LIB_DIR)/%.cu
+	@mkdir -p $(dir $@)
+	$(NVCC) -c -dc $(NVCC_FLAGS) -I$(LIB_DIR) $< -o $@
 
--include $(OBJ:.o=.d)
-
-
-run: default
-	$(BINDIR)$(TARGET) | pnmtopng > $(RESULTSDIR)out.png
-
-show:
-	make run
-	xdg-open $(RESULTSDIR)out.png > /dev/null 2>&1
-
-commands:
-	bear -- make
+-include $(OBJS:.o=.d)
 
 clean:
-	$(RM) -f -r $(OBJDIR)* $(BINDIR)*
+	$(RM) -rf $(BUILD_DIR)/*
+
+commands: clean
+	bear -- make

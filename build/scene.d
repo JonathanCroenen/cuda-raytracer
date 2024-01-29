@@ -51,6 +51,8 @@ build/scene.o : lib/scene.cu \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/crt/cudacc_ext.h \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/device_launch_parameters.h \
     lib/scene.h \
+    lib/materials/material.h \
+    lib/hit_record.h \
     lib/math/vec3.h \
     lib/utils/cuda.h \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_kernel.h \
@@ -71,21 +73,19 @@ build/scene.o : lib/scene.cu \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_lognormal.h \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_poisson.h \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_discrete2.h \
-    lib/primitives/volume.h \
-    lib/primitives/disk.h \
-    lib/hit_record.h \
-    lib/ray.h \
-    lib/primitives/plane.h \
-    lib/utils/gpu_managed.h \
-    lib/primitives/sphere.h \
-    lib/primitives/triangle.h \
-    lib/primitives/quad.h \
-    lib/utils/variant.h \
-    lib/materials/material.h \
     lib/materials/dielectric.h \
+    lib/ray.h \
+    lib/utils/gpu_managed.h \
     lib/materials/emissive.h \
     lib/materials/lambertian.h \
-    lib/materials/metal.h
+    lib/materials/metal.h \
+    lib/utils/variant.h \
+    lib/primitives/volume.h \
+    lib/primitives/disk.h \
+    lib/primitives/plane.h \
+    lib/primitives/quad.h \
+    lib/primitives/sphere.h \
+    lib/primitives/triangle.h
 
 /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/cuda_runtime.h:
 
@@ -191,6 +191,10 @@ build/scene.o : lib/scene.cu \
 
 lib/scene.h:
 
+lib/materials/material.h:
+
+lib/hit_record.h:
+
 lib/math/vec3.h:
 
 lib/utils/cuda.h:
@@ -231,32 +235,28 @@ lib/utils/cuda.h:
 
 /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_discrete2.h:
 
-lib/primitives/volume.h:
-
-lib/primitives/disk.h:
-
-lib/hit_record.h:
+lib/materials/dielectric.h:
 
 lib/ray.h:
 
-lib/primitives/plane.h:
-
 lib/utils/gpu_managed.h:
-
-lib/primitives/sphere.h:
-
-lib/primitives/triangle.h:
-
-lib/primitives/quad.h:
-
-lib/utils/variant.h:
-
-lib/materials/material.h:
-
-lib/materials/dielectric.h:
 
 lib/materials/emissive.h:
 
 lib/materials/lambertian.h:
 
 lib/materials/metal.h:
+
+lib/utils/variant.h:
+
+lib/primitives/volume.h:
+
+lib/primitives/disk.h:
+
+lib/primitives/plane.h:
+
+lib/primitives/quad.h:
+
+lib/primitives/sphere.h:
+
+lib/primitives/triangle.h:

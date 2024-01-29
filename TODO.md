@@ -1,5 +1,5 @@
 # TODOS
- - [ ] Change variant to expose index and be able to find index of given type switch statement can be used
+ - [x] Change variant to expose index and be able to find index of given type switch statement can be used
  - [ ] Mitigate self-intersections for reflected/refracter rays and later for shadow rays
  - [ ] Convert tracer to use shadow rays and explicit lights
  - [ ] Add more light variants (area light, sphere light, spot light, ...)

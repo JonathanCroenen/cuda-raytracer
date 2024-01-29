@@ -75,19 +75,19 @@ build/exe/main : exe/main.cu \
     lib/utils/gpu_managed.h \
     lib/renderer.h \
     lib/scene.h \
-    lib/primitives/volume.h \
-    lib/primitives/disk.h \
-    lib/hit_record.h \
-    lib/primitives/plane.h \
-    lib/primitives/sphere.h \
-    lib/primitives/triangle.h \
-    lib/primitives/quad.h \
-    lib/utils/variant.h \
     lib/materials/material.h \
+    lib/hit_record.h \
     lib/materials/dielectric.h \
     lib/materials/emissive.h \
     lib/materials/lambertian.h \
     lib/materials/metal.h \
+    lib/utils/variant.h \
+    lib/primitives/volume.h \
+    lib/primitives/disk.h \
+    lib/primitives/plane.h \
+    lib/primitives/quad.h \
+    lib/primitives/sphere.h \
+    lib/primitives/triangle.h \
     lib/scenes/cornell_quads.h \
     lib/utils/ppm.h
 
@@ -243,23 +243,9 @@ lib/renderer.h:
 
 lib/scene.h:
 
-lib/primitives/volume.h:
-
-lib/primitives/disk.h:
+lib/materials/material.h:
 
 lib/hit_record.h:
-
-lib/primitives/plane.h:
-
-lib/primitives/sphere.h:
-
-lib/primitives/triangle.h:
-
-lib/primitives/quad.h:
-
-lib/utils/variant.h:
-
-lib/materials/material.h:
 
 lib/materials/dielectric.h:
 
@@ -268,6 +254,20 @@ lib/materials/emissive.h:
 lib/materials/lambertian.h:
 
 lib/materials/metal.h:
+
+lib/utils/variant.h:
+
+lib/primitives/volume.h:
+
+lib/primitives/disk.h:
+
+lib/primitives/plane.h:
+
+lib/primitives/quad.h:
+
+lib/primitives/sphere.h:
+
+lib/primitives/triangle.h:
 
 lib/scenes/cornell_quads.h:
 

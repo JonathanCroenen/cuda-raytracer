@@ -4,17 +4,18 @@ namespace rtx {
 
 GPU_FUNC bool Volume::intersect(
     const Ray& ray, float t_min, float t_max, HitRecord& record) const {
-  if (is<Sphere>()) {
+  switch (type_id()) {
+  case type_id_of<Sphere>():
     return get<Sphere>().intersect(ray, t_min, t_max, record);
-  } else if (is<Plane>()) {
+  case type_id_of<Plane>():
     return get<Plane>().intersect(ray, t_min, t_max, record);
-  } else if (is<Triangle>()) {
+  case type_id_of<Triangle>():
     return get<Triangle>().intersect(ray, t_min, t_max, record);
-  } else if (is<Disk>()) {
+  case type_id_of<Disk>():
     return get<Disk>().intersect(ray, t_min, t_max, record);
-  } else if (is<Quad>()) {
+  case type_id_of<Quad>():
     return get<Quad>().intersect(ray, t_min, t_max, record);
-  } else {
+  default:
     return false;
   }
 }

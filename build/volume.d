@@ -76,9 +76,9 @@ build/volume.o : lib/volume.cu \
     lib/ray.h \
     lib/primitives/plane.h \
     lib/utils/gpu_managed.h \
+    lib/primitives/quad.h \
     lib/primitives/sphere.h \
     lib/primitives/triangle.h \
-    lib/primitives/quad.h \
     lib/utils/variant.h
 
 /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/cuda_runtime.h:
@@ -235,10 +235,10 @@ lib/primitives/plane.h:
 
 lib/utils/gpu_managed.h:
 
+lib/primitives/quad.h:
+
 lib/primitives/sphere.h:
 
 lib/primitives/triangle.h:
-
-lib/primitives/quad.h:
 
 lib/utils/variant.h:

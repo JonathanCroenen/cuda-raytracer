@@ -3,7 +3,6 @@
 #include "utils/cuda.h"
 #include <stdint.h>
 #include <utility>
-#include <variant>
 
 namespace rtx::utils {
 
@@ -185,11 +184,16 @@ public:
   }
 
   template <typename T, Supported<T> = true>
-  CPU_GPU_FUNC bool is() const {
+  CPU_GPU_FUNC inline bool is() const {
     return _id == TypeIndex<T>::value;
   }
 
-  CPU_GPU_FUNC bool valid() const { return _id != 0; }
+  CPU_GPU_FUNC inline bool valid() const { return _id != 0; }
+
+  CPU_GPU_FUNC inline uint8_t type_id() const { return _id; };
+
+  template<typename T, Supported<T> = true>
+  CPU_GPU_FUNC static inline constexpr uint8_t type_id_of() { return TypeIndex<T>::value; }
 
   template <typename T, typename... Args, Supported<T> = true>
   void set(Args&&... args) {
@@ -199,17 +203,17 @@ public:
   }
 
   template <typename T, Supported<T> = true>
-  CPU_GPU_FUNC T& get_unchecked() {
+  CPU_GPU_FUNC inline T& get_unchecked() {
     return *reinterpret_cast<T*>(&_data);
   }
 
   template <typename T, Supported<T> = true>
-  CPU_GPU_FUNC const T& get_unchecked() const {
+  CPU_GPU_FUNC inline const T& get_unchecked() const {
     return *reinterpret_cast<const T*>(&_data);
   }
 
   template <typename T, Supported<T> = true>
-  CPU_GPU_FUNC T& get() {
+  CPU_GPU_FUNC inline T& get() {
 #ifdef __CUDA_ARCH__
     return get_unchecked<T>();
 #else
@@ -221,7 +225,7 @@ public:
   }
 
   template <typename T, Supported<T> = true>
-  CPU_GPU_FUNC const T& get() const {
+  CPU_GPU_FUNC inline const T& get() const {
 #ifdef __CUDA_ARCH__
     return get_unchecked<T>();
 #else

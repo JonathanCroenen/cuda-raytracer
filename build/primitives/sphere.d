@@ -51,6 +51,7 @@ build/primitives/sphere.o : lib/primitives/sphere.cu \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/crt/cudacc_ext.h \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/device_launch_parameters.h \
     lib/primitives/sphere.h \
+    lib/hit_record.h \
     lib/math/vec3.h \
     lib/utils/cuda.h \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_kernel.h \
@@ -71,7 +72,6 @@ build/primitives/sphere.o : lib/primitives/sphere.cu \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_lognormal.h \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_poisson.h \
     /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_discrete2.h \
-    lib/hit_record.h \
     lib/ray.h
 
 /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/cuda_runtime.h:
@@ -178,6 +178,8 @@ build/primitives/sphere.o : lib/primitives/sphere.cu \
 
 lib/primitives/sphere.h:
 
+lib/hit_record.h:
+
 lib/math/vec3.h:
 
 lib/utils/cuda.h:
@@ -217,7 +219,5 @@ lib/utils/cuda.h:
 /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_poisson.h:
 
 /usr/local/cuda-12.3/bin/../targets/x86_64-linux/include/curand_discrete2.h:
-
-lib/hit_record.h:
 
 lib/ray.h:

@@ -3,8 +3,9 @@
 namespace rtx {
 
 GPU_FUNC const LightSample Light::sample(const vec3& from, curandState* rand_state) const {
-  if (is<PointLight>()) {
-    get<PointLight>().sample(from, rand_state);
+  switch (type_id()) {
+  case type_id_of<PointLight>(): return get<PointLight>().sample(from, rand_state);
+  default: return LightSample(); // Unreachable
   }
 }
 

@@ -1,20 +1,22 @@
 ---
-IndentWidth: 4
+IndentWidth: 2
 ColumnLimit: 90
 PointerAlignment: Left
 NamespaceIndentation: None
 AllowShortBlocksOnASingleLine: Always
 AllowShortFunctionsOnASingleLine: All
-AccessModifierOffset: -4
+AccessModifierOffset: -2
 LambdaBodyIndentation: OuterScope
 SortIncludes: CaseSensitive
 IncludeBlocks: Merge
-BinPackParameters: true
-BinPackArguments: true
+BinPackParameters: false
+BinPackArguments: false
+ExperimentalAutoDetectBinPacking: false
 PackConstructorInitializers: NextLine
 BreakConstructorInitializers: BeforeColon
 AlwaysBreakAfterReturnType: None
-AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: true
 AlignTrailingComments: Always
 AlwaysBreakTemplateDeclarations: Yes
 SeparateDefinitionBlocks: Leave

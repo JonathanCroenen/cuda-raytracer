@@ -13,13 +13,16 @@ namespace rtx {
 
 class Material : utils::Variant<Lambertian, Metal, Dielectric, Emissive> {
 private:
-    using vec3 = math::vec3<float>;
+  using vec3 = math::vec3<float>;
 
 public:
-    using Variant::Variant;
+  using Variant::Variant;
 
-    GPU_FUNC bool scatter(const Ray& ray, const HitRecord& record, vec3& attenuation,
-                          Ray& scattered, curandState* rand_state) const;
+  GPU_FUNC bool scatter(const Ray& ray,
+                        const HitRecord& record,
+                        vec3& attenuation,
+                        Ray& scattered,
+                        curandState* rand_state) const;
 };
 
 } // namespace rtx
